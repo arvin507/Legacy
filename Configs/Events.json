@@ -1,5 +1,5 @@
 {
-  "trigger_chance": 0.0,
+  "trigger_chance": 0.3,
   "events": [
     {
       "id": "lost_purse",

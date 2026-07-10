@@ -1,0 +1,69 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://Scripts/MainController.cs" id="1_main"]
+[ext_resource type="Script" path="res://Scripts/Managers/GameManager.cs" id="2_manager"]
+[ext_resource type="Texture2D" path="res://Resources/bg.png" id="3_background"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/MainScreen.tscn" id="4_screen"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/Events/EventPopup.tscn" id="5_event_popup"]
+[ext_resource type="Script" path="res://Scripts/UI/Events/EventPopupController.cs" id="6_event_controller"]
+
+[sub_resource type="StyleBoxFlat" id="Style_edge"]
+bg_color = Color(0.15, 0.115, 0.08, 0.11)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_main")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_background")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="WarmVeil" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.94, 0.89, 0.78, 0.3)
+
+[node name="EdgeShade" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_edge")
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("2_manager")
+
+[node name="MainScreen" parent="." instance=ExtResource("4_screen")]
+layout_mode = 1
+
+[node name="EventPopup" parent="." instance=ExtResource("5_event_popup")]
+
+[node name="EventPopupController" type="Node" parent="."]
+script = ExtResource("6_event_controller")
+popup_path = NodePath("../EventPopup")
+manager_path = NodePath("../GameManager")

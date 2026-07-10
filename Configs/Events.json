@@ -1,0 +1,373 @@
+{
+  "trigger_chance": 0.0,
+  "events": [
+    {
+      "id": "lost_purse",
+      "title": "路边的钱袋",
+      "description": "暮色里，你在田埂旁发现一个沾着泥土的钱袋。四下无人，袋中传来铜钱碰撞的轻响。",
+      "illustration_path": "",
+      "weight": 100,
+      "conditions": [],
+      "choices": [
+        {
+          "id": "keep",
+          "text": "收下钱袋",
+          "rewards": [
+            { "type": "Money", "amount": 25 }
+          ],
+          "nextEventId": null,
+          "closeEvent": true
+        },
+        {
+          "id": "leave",
+          "text": "留在原处",
+          "rewards": [
+            { "type": "Culture", "amount": 1 }
+          ],
+          "nextEventId": null,
+          "closeEvent": true
+        }
+      ]
+    },
+    {
+      "id": "help_elder",
+      "title": "搀扶老人",
+      "description": "村口石桥边，一位老人背着沉重的竹篓，脚步踉跄。他停下来喘气，似乎还要赶很远的路。",
+      "illustration_path": "",
+      "weight": 60,
+      "conditions": [],
+      "choices": [
+        {
+          "id": "help",
+          "text": "送老人回家",
+          "rewards": [
+            { "type": "Stamina", "amount": -2 },
+            { "type": "Culture", "amount": 1 },
+            { "type": "Money", "amount": 5 }
+          ],
+          "nextEventId": null,
+          "closeEvent": true
+        },
+        {
+          "id": "pass_by",
+          "text": "匆匆赶路",
+          "rewards": [],
+          "nextEventId": null,
+          "closeEvent": true
+        }
+      ]
+    },
+    {
+      "id": "traveling_merchant",
+      "title": "行脚商人",
+      "description": "一名行脚商人在树下摊开包袱，里面摆着药丸、旧纸和异乡的小物件。他笑着向你招手。",
+      "illustration_path": "",
+      "weight": 20,
+      "conditions": [
+        { "field": "money", "operator": ">=", "value": 30 }
+      ],
+      "choices": [
+        {
+          "id": "buy_medicine",
+          "text": "买一包伤药 · 30文",
+          "rewards": [
+            { "type": "Money", "amount": -30 },
+            { "type": "Health", "amount": 15 }
+          ],
+          "nextEventId": null,
+          "closeEvent": true
+        },
+        {
+          "id": "buy_notes",
+          "text": "买几页旧札 · 20文",
+          "rewards": [
+            { "type": "Money", "amount": -20 },
+            { "type": "Culture", "amount": 2 }
+          ],
+          "nextEventId": null,
+          "closeEvent": true
+        },
+        {
+          "id": "leave",
+          "text": "看看便走",
+          "rewards": [],
+          "nextEventId": null,
+          "closeEvent": true
+        }
+      ]
+    },
+    {
+      "id": "village_head_request",
+      "title": "村长相求",
+      "description": "村长正在召集人手修补被雨水冲坏的土路。他说若不尽快动工，明日的粮车恐怕进不了村。",
+      "illustration_path": "",
+      "weight": 20,
+      "conditions": [
+        { "field": "age", "operator": ">=", "value": 16 }
+      ],
+      "choices": [
+        {
+          "id": "donate",
+          "text": "出资修路 · 20文",
+          "rewards": [
+            { "type": "Money", "amount": -20 },
+            { "type": "Culture", "amount": 1 }
+          ],
+          "nextEventId": null,
+          "closeEvent": true
+        },
+        {
+          "id": "work",
+          "text": "亲自帮工",
+          "rewards": [
+            { "type": "Stamina", "amount": -2 },
+            { "type": "Culture", "amount": 1 }
+          ],
+          "nextEventId": null,
+          "closeEvent": true
+        },
+        {
+          "id": "decline",
+          "text": "婉言推辞",
+          "rewards": [],
+          "nextEventId": null,
+          "closeEvent": true
+        }
+      ]
+    },
+    {
+      "id": "fish_school",
+      "title": "河中鱼群",
+      "description": "河水忽然泛起细密波纹，大群银亮的小鱼正在浅滩聚集。这是难得一见的好机会。",
+      "illustration_path": "",
+      "weight": 55,
+      "conditions": [],
+      "choices": [
+        {
+          "id": "cast_net",
+          "text": "全力撒网",
+          "rewards": [
+            { "type": "Stamina", "amount": -2 },
+            { "type": "Money", "amount": 35 }
+          ],
+          "nextEventId": null,
+          "closeEvent": true
+        },
+        {
+          "id": "small_net",
+          "text": "在岸边捞取",
+          "rewards": [
+            { "type": "Stamina", "amount": -1 },
+            { "type": "Money", "amount": 15 }
+          ],
+          "nextEventId": null,
+          "closeEvent": true
+        },
+        {
+          "id": "protect",
+          "text": "不惊扰鱼群",
+          "rewards": [
+            { "type": "Culture", "amount": 1 }
+          ],
+          "nextEventId": null,
+          "closeEvent": true
+        }
+      ]
+    },
+    {
+      "id": "wild_herbs",
+      "title": "山间药草",
+      "description": "山路旁长着几株叶片青翠的药草。你曾在旧书中见过它们，似乎可以止痛退热。",
+      "illustration_path": "",
+      "weight": 50,
+      "conditions": [],
+      "choices": [
+        {
+          "id": "sell",
+          "text": "采下卖给药铺",
+          "rewards": [
+            { "type": "Money", "amount": 18 }
+          ],
+          "nextEventId": null,
+          "closeEvent": true
+        },
+        {
+          "id": "use",
+          "text": "留下调养身体",
+          "rewards": [
+            { "type": "Health", "amount": 10 }
+          ],
+          "nextEventId": null,
+          "closeEvent": true
+        }
+      ]
+    },
+    {
+      "id": "neighbor_borrow",
+      "title": "邻人借钱",
+      "description": "邻人神色为难地登门，说家中孩子染了风寒，想向你借些钱请郎中。",
+      "illustration_path": "",
+      "weight": 35,
+      "conditions": [
+        { "field": "money", "operator": ">=", "value": 20 }
+      ],
+      "choices": [
+        {
+          "id": "lend",
+          "text": "借出二十文",
+          "rewards": [
+            { "type": "Money", "amount": -20 },
+            { "type": "Culture", "amount": 1 }
+          ],
+          "nextEventId": null,
+          "closeEvent": true
+        },
+        {
+          "id": "gift",
+          "text": "赠他五文",
+          "rewards": [
+            { "type": "Money", "amount": -5 },
+            { "type": "Culture", "amount": 1 }
+          ],
+          "nextEventId": null,
+          "closeEvent": true
+        },
+        {
+          "id": "refuse",
+          "text": "推说手头拮据",
+          "rewards": [],
+          "nextEventId": null,
+          "closeEvent": true
+        }
+      ]
+    },
+    {
+      "id": "old_book",
+      "title": "一本旧书",
+      "description": "废弃屋檐下压着一本残破旧书，纸页受了潮，依稀还能辨认出其中的字句。",
+      "illustration_path": "",
+      "weight": 40,
+      "conditions": [],
+      "choices": [
+        {
+          "id": "study",
+          "text": "带回仔细研读",
+          "rewards": [
+            { "type": "Stamina", "amount": -1 },
+            { "type": "Culture", "amount": 3 }
+          ],
+          "nextEventId": null,
+          "closeEvent": true
+        },
+        {
+          "id": "sell",
+          "text": "卖给旧书铺",
+          "rewards": [
+            { "type": "Money", "amount": 12 }
+          ],
+          "nextEventId": null,
+          "closeEvent": true
+        },
+        {
+          "id": "preserve",
+          "text": "收好残页",
+          "rewards": [
+            { "type": "Culture", "amount": 1 }
+          ],
+          "nextEventId": null,
+          "closeEvent": true
+        }
+      ]
+    },
+    {
+      "id": "temple_fair",
+      "title": "乡间庙会",
+      "description": "远处锣鼓喧天，乡民们沿着挂满灯笼的小路赶赴庙会。摊贩、杂耍和香火挤满了长街。",
+      "illustration_path": "",
+      "weight": 15,
+      "conditions": [
+        { "field": "total_months", "operator": ">=", "value": 2 }
+      ],
+      "choices": [
+        {
+          "id": "food",
+          "text": "尝些吃食 · 10文",
+          "rewards": [
+            { "type": "Money", "amount": -10 },
+            { "type": "Health", "amount": 5 }
+          ],
+          "nextEventId": null,
+          "closeEvent": true
+        },
+        {
+          "id": "game",
+          "text": "试试投壶 · 5文",
+          "rewards": [
+            { "type": "Money", "amount": 10 },
+            { "type": "Culture", "amount": 1 }
+          ],
+          "nextEventId": null,
+          "closeEvent": true
+        },
+        {
+          "id": "watch",
+          "text": "看看百戏",
+          "rewards": [
+            { "type": "Culture", "amount": 1 }
+          ],
+          "nextEventId": null,
+          "closeEvent": true
+        },
+        {
+          "id": "leave",
+          "text": "绕道回家",
+          "rewards": [],
+          "nextEventId": null,
+          "closeEvent": true
+        }
+      ]
+    },
+    {
+      "id": "season_festival",
+      "title": "时节庆典",
+      "description": "今日恰逢时节庆典，家家门前焚香洒扫，村中长桌摆满了新收的谷物与果蔬。",
+      "illustration_path": "",
+      "weight": 2,
+      "conditions": [
+        { "field": "month", "operator": "==", "value": 12 }
+      ],
+      "choices": [
+        {
+          "id": "donate",
+          "text": "捐钱添置祭礼 · 25文",
+          "rewards": [
+            { "type": "Money", "amount": -25 },
+            { "type": "Culture", "amount": 2 }
+          ],
+          "nextEventId": null,
+          "closeEvent": true
+        },
+        {
+          "id": "join",
+          "text": "帮忙张罗庆典",
+          "rewards": [
+            { "type": "Stamina", "amount": -2 },
+            { "type": "Health", "amount": 5 },
+            { "type": "Culture", "amount": 1 }
+          ],
+          "nextEventId": null,
+          "closeEvent": true
+        },
+        {
+          "id": "quiet",
+          "text": "在家安静度过",
+          "rewards": [
+            { "type": "Health", "amount": 2 }
+          ],
+          "nextEventId": null,
+          "closeEvent": true
+        }
+      ]
+    }
+  ]
+}

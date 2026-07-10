@@ -1,0 +1,8 @@
+.godot/
+.mono/
+bin/
+obj/
+Tests/bin/
+Tests/obj/
+*.user
+*.sln.DotSettings.user

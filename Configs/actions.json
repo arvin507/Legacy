@@ -1,0 +1,67 @@
+[
+  {
+    "id": "farm",
+    "name": "种地",
+    "description": "翻土播种，换些辛苦钱",
+    "energy_cost": 2,
+    "reward_type": "money",
+    "reward_min": 15,
+    "reward_max": 15,
+    "reward_label": "获得 15 文",
+    "daily_limit": 0,
+    "icon_path": "res://Resources/Icons/action_farm.svg",
+    "accent_color": "#8C5B3E"
+  },
+  {
+    "id": "woodcut",
+    "name": "砍柴",
+    "description": "上山拾薪，卖给附近人家",
+    "energy_cost": 3,
+    "reward_type": "money",
+    "reward_min": 25,
+    "reward_max": 25,
+    "reward_label": "获得 25 文",
+    "daily_limit": 0,
+    "icon_path": "res://Resources/Icons/action_wood.svg",
+    "accent_color": "#6F6244"
+  },
+  {
+    "id": "study",
+    "name": "学习",
+    "description": "静心读书，积累学识",
+    "energy_cost": 2,
+    "reward_type": "culture",
+    "reward_min": 1,
+    "reward_max": 1,
+    "reward_label": "文化 +1",
+    "daily_limit": 0,
+    "icon_path": "res://Resources/Icons/action_study.svg",
+    "accent_color": "#355C58"
+  },
+  {
+    "id": "fish",
+    "name": "捕鱼",
+    "description": "临水下网，收获全凭运气",
+    "energy_cost": 3,
+    "reward_type": "money",
+    "reward_min": 0,
+    "reward_max": 40,
+    "reward_label": "获得 0~40 文",
+    "daily_limit": 0,
+    "icon_path": "res://Resources/Icons/action_fish.svg",
+    "accent_color": "#3D6573"
+  },
+  {
+    "id": "rest",
+    "name": "休息",
+    "description": "小憩片刻，恢复精神",
+    "energy_cost": 0,
+    "reward_type": "energy",
+    "reward_min": 2,
+    "reward_max": 2,
+    "reward_label": "恢复 2 体力 · 每月一次",
+    "daily_limit": 1,
+    "icon_path": "res://Resources/Icons/action_rest.svg",
+    "accent_color": "#76526D"
+  }
+]

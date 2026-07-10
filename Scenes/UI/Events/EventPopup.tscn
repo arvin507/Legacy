@@ -1,0 +1,113 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://Scripts/UI/Events/EventPopup.cs" id="1_script"]
+[ext_resource type="Theme" path="res://Resources/Themes/main_theme.tres" id="2_theme"]
+
+[sub_resource type="StyleBoxFlat" id="Style_popup"]
+bg_color = Color(0.975, 0.943, 0.866, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.58, 0.23, 0.2, 0.86)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0.12, 0.08, 0.05, 0.32)
+shadow_size = 18
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="Style_illustration"]
+bg_color = Color(0.88, 0.83, 0.72, 0.42)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.36, 0.32, 0.28)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxEmpty" id="Style_root"]
+
+[node name="EventPopup" type="PopupPanel"]
+size = Vector2i(900, 544)
+exclusive = true
+unresizable = true
+theme = ExtResource("2_theme")
+theme_override_styles/panel = SubResource("Style_root")
+script = ExtResource("1_script")
+
+[node name="Center" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DialogPanel" type="PanelContainer" parent="Center"]
+custom_minimum_size = Vector2(800, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_popup")
+
+[node name="ContentMargin" type="MarginContainer" parent="Center/DialogPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 44
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_right = 44
+theme_override_constants/margin_bottom = 36
+
+[node name="Content" type="VBoxContainer" parent="Center/DialogPanel/ContentMargin"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Eyebrow" type="Label" parent="Center/DialogPanel/ContentMargin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.58, 0.23, 0.2, 1)
+theme_override_font_sizes/font_size = 22
+text = "命途偶遇"
+horizontal_alignment = 1
+
+[node name="Header" type="VBoxContainer" parent="Center/DialogPanel/ContentMargin/Content"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Center/DialogPanel/ContentMargin/Content/Header"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.22, 0.17, 0.12, 1)
+theme_override_font_sizes/font_size = 44
+text = "事件标题"
+horizontal_alignment = 1
+
+[node name="Rule" type="ColorRect" parent="Center/DialogPanel/ContentMargin/Content/Header"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.58, 0.23, 0.2, 0.25)
+
+[node name="IllustrationFrame" type="PanelContainer" parent="Center/DialogPanel/ContentMargin/Content"]
+visible = false
+custom_minimum_size = Vector2(0, 220)
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_illustration")
+
+[node name="Illustration" type="TextureRect" parent="Center/DialogPanel/ContentMargin/Content/IllustrationFrame"]
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Description" type="Label" parent="Center/DialogPanel/ContentMargin/Content"]
+custom_minimum_size = Vector2(0, 110)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.25, 0.19, 1)
+theme_override_font_sizes/font_size = 28
+text = "事件描述"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Choices" type="VBoxContainer" parent="Center/DialogPanel/ContentMargin/Content"]
+layout_mode = 2
+theme_override_constants/separation = 14

@@ -21,11 +21,6 @@ public static class CalendarConfigLoader
             ?? throw new InvalidDataException("Calendar configuration is empty.");
         var months = source.Months.Select(ToMonthData).ToArray();
 
-        if (source.DaysPerMonth <= 0)
-        {
-            throw new InvalidDataException("days_per_month must be positive.");
-        }
-
         if (months.Length != 12)
         {
             throw new InvalidDataException("The ancient calendar must contain exactly 12 months.");
@@ -43,7 +38,6 @@ public static class CalendarConfigLoader
 
         return new CalendarConfig
         {
-            DaysPerMonth = source.DaysPerMonth,
             Months = months
         };
     }
@@ -72,9 +66,6 @@ public static class CalendarConfigLoader
 
     private sealed class CalendarConfigEntry
     {
-        [JsonPropertyName("days_per_month")]
-        public int DaysPerMonth { get; init; }
-
         [JsonPropertyName("months")]
         public List<MonthEntry> Months { get; init; } = [];
     }

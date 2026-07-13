@@ -8,9 +8,11 @@
     "reward_min": 15,
     "reward_max": 15,
     "reward_label": "获得 15 文",
-    "daily_limit": 0,
+    "monthly_limit": 4,
     "icon_path": "res://Resources/Icons/action_farm.svg",
-    "accent_color": "#8C5B3E"
+    "accent_color": "#8C5B3E",
+    "skill_type": "farming",
+    "skill_gain": 2
   },
   {
     "id": "woodcut",
@@ -21,9 +23,11 @@
     "reward_min": 25,
     "reward_max": 25,
     "reward_label": "获得 25 文",
-    "daily_limit": 0,
+    "monthly_limit": 3,
     "icon_path": "res://Resources/Icons/action_wood.svg",
-    "accent_color": "#6F6244"
+    "accent_color": "#6F6244",
+    "skill_type": "farming",
+    "skill_gain": 1
   },
   {
     "id": "study",
@@ -34,9 +38,11 @@
     "reward_min": 1,
     "reward_max": 1,
     "reward_label": "文化 +1",
-    "daily_limit": 0,
+    "monthly_limit": 4,
     "icon_path": "res://Resources/Icons/action_study.svg",
-    "accent_color": "#355C58"
+    "accent_color": "#355C58",
+    "skill_type": "scholarship",
+    "skill_gain": 2
   },
   {
     "id": "fish",
@@ -47,9 +53,11 @@
     "reward_min": 0,
     "reward_max": 40,
     "reward_label": "获得 0~40 文",
-    "daily_limit": 0,
+    "monthly_limit": 2,
     "icon_path": "res://Resources/Icons/action_fish.svg",
-    "accent_color": "#3D6573"
+    "accent_color": "#3D6573",
+    "skill_type": "farming",
+    "skill_gain": 1
   },
   {
     "id": "rest",
@@ -60,8 +68,10 @@
     "reward_min": 2,
     "reward_max": 2,
     "reward_label": "恢复 2 体力 · 每月一次",
-    "daily_limit": 1,
+    "monthly_limit": 1,
     "icon_path": "res://Resources/Icons/action_rest.svg",
-    "accent_color": "#76526D"
+    "accent_color": "#76526D",
+    "skill_type": "none",
+    "skill_gain": 0
   }
 ]

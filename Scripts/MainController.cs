@@ -16,11 +16,11 @@ public partial class MainController : Control
         _screen = GetNode<MainScreen>("MainScreen");
 
         _screen.ActionRequested += OnActionRequested;
-        _screen.EndDayRequested += OnEndDayRequested;
+        _screen.EndMonthRequested += OnEndMonthRequested;
         _screen.RestartRequested += OnRestartRequested;
         _gameManager.StateChanged += Render;
         _gameManager.ActionResolved += OnActionResolved;
-        _gameManager.DaySettled += OnDaySettled;
+        _gameManager.MonthSettled += OnMonthSettled;
         _gameManager.GameEnded += OnGameEnded;
 
         _screen.InitializeActions(_gameManager.Session.Actions);
@@ -32,7 +32,7 @@ public partial class MainController : Control
         if (_screen is not null)
         {
             _screen.ActionRequested -= OnActionRequested;
-            _screen.EndDayRequested -= OnEndDayRequested;
+            _screen.EndMonthRequested -= OnEndMonthRequested;
             _screen.RestartRequested -= OnRestartRequested;
         }
 
@@ -40,7 +40,7 @@ public partial class MainController : Control
         {
             _gameManager.StateChanged -= Render;
             _gameManager.ActionResolved -= OnActionResolved;
-            _gameManager.DaySettled -= OnDaySettled;
+            _gameManager.MonthSettled -= OnMonthSettled;
             _gameManager.GameEnded -= OnGameEnded;
         }
     }
@@ -50,9 +50,9 @@ public partial class MainController : Control
         _gameManager.PerformAction(actionId);
     }
 
-    private void OnEndDayRequested()
+    private void OnEndMonthRequested()
     {
-        _gameManager.EndDay();
+        _gameManager.EndMonth();
     }
 
     private void OnRestartRequested()
@@ -67,7 +67,7 @@ public partial class MainController : Control
         _screen.ShowFeedback(result.Message, result.Success);
     }
 
-    private void OnDaySettled(DailySettlementResult result)
+    private void OnMonthSettled(MonthlySettlementResult result)
     {
         _screen.ShowFeedback(result.Message, result.HealthChange >= 0);
     }
@@ -88,6 +88,7 @@ public partial class MainController : Control
         _screen.Render(
             session.Character,
             session.Calendar,
+            session.ProfessionGoal,
             availability,
             session.IsGameOver);
     }

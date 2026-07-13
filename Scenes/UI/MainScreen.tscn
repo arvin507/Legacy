@@ -52,7 +52,7 @@ layout_mode = 2
 theme_override_constants/separation = 18
 
 [node name="Header" type="PanelContainer" parent="MainMargin/Layout"]
-custom_minimum_size = Vector2(0, 286)
+custom_minimum_size = Vector2(0, 334)
 layout_mode = 2
 clip_contents = true
 
@@ -97,7 +97,7 @@ text = "春"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Day" type="Label" parent="MainMargin/Layout/Header/HeaderMargin/HeaderContent/TimeRow"]
+[node name="Month" type="Label" parent="MainMargin/Layout/Header/HeaderMargin/HeaderContent/TimeRow"]
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_colors/font_color = Color(0.84, 0.79, 0.68, 1)
@@ -146,6 +146,13 @@ size_flags_vertical = 4
 theme_override_colors/font_color = Color(0.77, 0.69, 0.56, 1)
 theme_override_font_sizes/font_size = 25
 text = "布衣"
+
+[node name="ProfessionGoal" type="Label" parent="MainMargin/Layout/Header/HeaderMargin/HeaderContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.81, 0.68, 1)
+theme_override_font_sizes/font_size = 24
+text = "生涯目标：务农可入帮农，读书可入书生"
+autowrap_mode = 2
 
 [node name="StatsHeading" type="HBoxContainer" parent="MainMargin/Layout"]
 custom_minimum_size = Vector2(0, 52)
@@ -262,7 +269,7 @@ theme_override_constants/margin_bottom = 18
 [node name="FooterContent" type="HBoxContainer" parent="MainMargin/Layout/Footer/FooterMargin"]
 layout_mode = 2
 
-[node name="EndDay" type="Button" parent="MainMargin/Layout/Footer/FooterMargin/FooterContent"]
+[node name="EndMonth" type="Button" parent="MainMargin/Layout/Footer/FooterMargin/FooterContent"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
@@ -349,7 +356,7 @@ color = Color(0.58, 0.23, 0.2, 0.22)
 layout_mode = 2
 theme_override_constants/separation = 18
 
-[node name="Days" type="Label" parent="GameOverLayer/Center/GameOverPanel/ModalMargin/ModalContent/Summary"]
+[node name="Months" type="Label" parent="GameOverLayer/Center/GameOverPanel/ModalMargin/ModalContent/Summary"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.21, 0.17, 0.12, 1)
 theme_override_font_sizes/font_size = 34
@@ -369,6 +376,28 @@ theme_override_colors/font_color = Color(0.21, 0.17, 0.12, 1)
 theme_override_font_sizes/font_size = 34
 text = "文化积累　0"
 horizontal_alignment = 1
+
+[node name="Age" type="Label" parent="GameOverLayer/Center/GameOverPanel/ModalMargin/ModalContent/Summary"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.21, 0.17, 0.12, 1)
+theme_override_font_sizes/font_size = 34
+text = "享年　　　16 岁"
+horizontal_alignment = 1
+
+[node name="Profession" type="Label" parent="GameOverLayer/Center/GameOverPanel/ModalMargin/ModalContent/Summary"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.21, 0.17, 0.12, 1)
+theme_override_font_sizes/font_size = 34
+text = "最终身份　平民"
+horizontal_alignment = 1
+
+[node name="Records" type="Label" parent="GameOverLayer/Center/GameOverPanel/ModalMargin/ModalContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.38, 0.31, 0.23, 1)
+theme_override_font_sizes/font_size = 24
+text = "人生履历"
+horizontal_alignment = 1
+autowrap_mode = 2
 
 [node name="Restart" type="Button" parent="GameOverLayer/Center/GameOverPanel/ModalMargin/ModalContent"]
 custom_minimum_size = Vector2(0, 116)

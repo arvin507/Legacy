@@ -14,20 +14,26 @@ public partial class MainScreen : Control
     private PanelContainer _seasonBadge = null!;
     private Label _yearLabel = null!;
     private Label _seasonLabel = null!;
-    private Label _dayLabel = null!;
+    private Label _monthLabel = null!;
     private Label _monthlyOrderLabel = null!;
     private Label _nameLabel = null!;
     private Label _ageLabel = null!;
+    private Label _standingLabel = null!;
+    private Label _professionGoalLabel = null!;
     private Label _actionStatusLabel = null!;
     private PanelContainer _feedbackPanel = null!;
     private Label _feedbackLabel = null!;
     private VBoxContainer _actionList = null!;
-    private Button _endDayButton = null!;
+    private Button _endMonthButton = null!;
     private Control _gameOverLayer = null!;
     private PanelContainer _gameOverPanel = null!;
-    private Label _daysSummary = null!;
+    private Label _gameOverSubtitle = null!;
+    private Label _monthsSummary = null!;
     private Label _wealthSummary = null!;
     private Label _cultureSummary = null!;
+    private Label _ageSummary = null!;
+    private Label _professionSummary = null!;
+    private Label _recordsSummary = null!;
     private Button _restartButton = null!;
 
     private StatCard _energyCard = null!;
@@ -37,14 +43,14 @@ public partial class MainScreen : Control
     private StatCard _cultureCard = null!;
 
     public event System.Action<string>? ActionRequested;
-    public event System.Action? EndDayRequested;
+    public event System.Action? EndMonthRequested;
     public event System.Action? RestartRequested;
 
     public override void _Ready()
     {
         BindNodes();
         ConfigureStaticVisuals();
-        _endDayButton.Pressed += () => EndDayRequested?.Invoke();
+        _endMonthButton.Pressed += () => EndMonthRequested?.Invoke();
         _restartButton.Pressed += () => RestartRequested?.Invoke();
         ApplyResponsiveMargins();
     }
@@ -78,18 +84,21 @@ public partial class MainScreen : Control
     public void Render(
         CharacterState character,
         CalendarState calendar,
+        string professionGoal,
         IReadOnlyDictionary<string, ActionAvailability> availability,
         bool isGameOver)
     {
         _yearLabel.Text = calendar.EraYearName;
         _seasonLabel.Text = calendar.SeasonName;
-        _dayLabel.Text = calendar.MonthName;
+        _monthLabel.Text = calendar.MonthName;
         _monthlyOrderLabel.Text = calendar.MonthlyOrder;
         _nameLabel.Text = character.Name;
         _ageLabel.Text = $"{character.Age}岁";
+        _standingLabel.Text = $"{character.ProfessionName} · 农事 {character.FarmingSkill} · 学识 {character.ScholarshipSkill}";
+        _professionGoalLabel.Text = professionGoal;
 
         _energyCard.SetValue($"{character.Energy} / {character.MaxEnergy}", character.Energy, character.MaxEnergy);
-        _healthCard.SetValue(character.Health.ToString(), character.Health, 100);
+        _healthCard.SetValue($"{character.Health} / {character.MaxHealth}", character.Health, character.MaxHealth);
         _moneyCard.SetValue($"{character.Money} 文");
         _foodCard.SetValue(character.Food.ToString());
         _cultureCard.SetValue(character.Culture.ToString());
@@ -102,7 +111,7 @@ public partial class MainScreen : Control
                 new ActionAvailability(false, "行动不可用")));
         }
 
-        _endDayButton.Disabled = isGameOver;
+        _endMonthButton.Disabled = isGameOver;
     }
 
     public void ShowFeedback(string message, bool positive = true)
@@ -120,9 +129,15 @@ public partial class MainScreen : Control
 
     public void ShowGameOver(GameSummary summary)
     {
-        _daysSummary.Text = $"存活月数　{summary.MonthsSurvived} 月";
+        _monthsSummary.Text = $"存活月数　{summary.MonthsSurvived} 月";
         _wealthSummary.Text = $"最终财富　{summary.FinalWealth} 文";
         _cultureSummary.Text = $"文化积累　{summary.Culture}";
+        _ageSummary.Text = $"享年　　　{summary.Age} 岁";
+        _professionSummary.Text = $"最终身份　{summary.ProfessionName}";
+        _gameOverSubtitle.Text = summary.EndingTitle;
+        _recordsSummary.Text = string.Join("\n", summary.LifeRecords
+            .TakeLast(5)
+            .Select(record => $"{record.EraYear}{record.MonthName} · {record.Text}"));
         _gameOverLayer.Visible = true;
         _restartButton.GrabFocus();
     }
@@ -139,15 +154,17 @@ public partial class MainScreen : Control
         _seasonBadge = GetNode<PanelContainer>("MainMargin/Layout/Header/HeaderMargin/HeaderContent/TimeRow/SeasonBadge");
         _yearLabel = GetNode<Label>("MainMargin/Layout/Header/HeaderMargin/HeaderContent/TimeRow/Year");
         _seasonLabel = GetNode<Label>("MainMargin/Layout/Header/HeaderMargin/HeaderContent/TimeRow/SeasonBadge/Season");
-        _dayLabel = GetNode<Label>("MainMargin/Layout/Header/HeaderMargin/HeaderContent/TimeRow/Day");
+        _monthLabel = GetNode<Label>("MainMargin/Layout/Header/HeaderMargin/HeaderContent/TimeRow/Month");
         _monthlyOrderLabel = GetNode<Label>("MainMargin/Layout/Header/HeaderMargin/HeaderContent/Eyebrow");
         _nameLabel = GetNode<Label>("MainMargin/Layout/Header/HeaderMargin/HeaderContent/IdentityRow/Name");
         _ageLabel = GetNode<Label>("MainMargin/Layout/Header/HeaderMargin/HeaderContent/IdentityRow/Age");
+        _standingLabel = GetNode<Label>("MainMargin/Layout/Header/HeaderMargin/HeaderContent/IdentityRow/Standing");
+        _professionGoalLabel = GetNode<Label>("MainMargin/Layout/Header/HeaderMargin/HeaderContent/ProfessionGoal");
         _actionStatusLabel = GetNode<Label>("MainMargin/Layout/ActionHeading/Status");
         _feedbackPanel = GetNode<PanelContainer>("MainMargin/Layout/Feedback");
         _feedbackLabel = GetNode<Label>("MainMargin/Layout/Feedback/FeedbackMargin/Message");
         _actionList = GetNode<VBoxContainer>("MainMargin/Layout/ActionScroll/ActionList");
-        _endDayButton = GetNode<Button>("MainMargin/Layout/Footer/FooterMargin/FooterContent/EndDay");
+        _endMonthButton = GetNode<Button>("MainMargin/Layout/Footer/FooterMargin/FooterContent/EndMonth");
 
         _energyCard = GetNode<StatCard>("MainMargin/Layout/Stats/Vitals/Energy");
         _healthCard = GetNode<StatCard>("MainMargin/Layout/Stats/Vitals/Health");
@@ -157,9 +174,13 @@ public partial class MainScreen : Control
 
         _gameOverLayer = GetNode<Control>("GameOverLayer");
         _gameOverPanel = GetNode<PanelContainer>("GameOverLayer/Center/GameOverPanel");
-        _daysSummary = GetNode<Label>("GameOverLayer/Center/GameOverPanel/ModalMargin/ModalContent/Summary/Days");
+        _gameOverSubtitle = GetNode<Label>("GameOverLayer/Center/GameOverPanel/ModalMargin/ModalContent/Subtitle");
+        _monthsSummary = GetNode<Label>("GameOverLayer/Center/GameOverPanel/ModalMargin/ModalContent/Summary/Months");
         _wealthSummary = GetNode<Label>("GameOverLayer/Center/GameOverPanel/ModalMargin/ModalContent/Summary/Wealth");
         _cultureSummary = GetNode<Label>("GameOverLayer/Center/GameOverPanel/ModalMargin/ModalContent/Summary/Culture");
+        _ageSummary = GetNode<Label>("GameOverLayer/Center/GameOverPanel/ModalMargin/ModalContent/Summary/Age");
+        _professionSummary = GetNode<Label>("GameOverLayer/Center/GameOverPanel/ModalMargin/ModalContent/Summary/Profession");
+        _recordsSummary = GetNode<Label>("GameOverLayer/Center/GameOverPanel/ModalMargin/ModalContent/Records");
         _restartButton = GetNode<Button>("GameOverLayer/Center/GameOverPanel/ModalMargin/ModalContent/Restart");
     }
 
@@ -181,10 +202,10 @@ public partial class MainScreen : Control
         _foodCard.Configure("粮食", "res://Resources/Icons/stat_food.svg", Color.FromHtml("#56704D"), false);
         _cultureCard.Configure("文化", "res://Resources/Icons/stat_culture.svg", StylePalette.Jade, false);
 
-        _endDayButton.AddThemeStyleboxOverride("normal", StylePalette.CreateSolidButtonStyle(StylePalette.Cinnabar));
-        _endDayButton.AddThemeStyleboxOverride("hover", StylePalette.CreateSolidButtonStyle(StylePalette.Cinnabar.Lightened(0.08f)));
-        _endDayButton.AddThemeStyleboxOverride("pressed", StylePalette.CreateSolidButtonStyle(StylePalette.Cinnabar, true));
-        _endDayButton.AddThemeStyleboxOverride("disabled", StylePalette.CreateSolidButtonStyle(StylePalette.Cinnabar, false, true));
+        _endMonthButton.AddThemeStyleboxOverride("normal", StylePalette.CreateSolidButtonStyle(StylePalette.Cinnabar));
+        _endMonthButton.AddThemeStyleboxOverride("hover", StylePalette.CreateSolidButtonStyle(StylePalette.Cinnabar.Lightened(0.08f)));
+        _endMonthButton.AddThemeStyleboxOverride("pressed", StylePalette.CreateSolidButtonStyle(StylePalette.Cinnabar, true));
+        _endMonthButton.AddThemeStyleboxOverride("disabled", StylePalette.CreateSolidButtonStyle(StylePalette.Cinnabar, false, true));
         _restartButton.AddThemeStyleboxOverride("normal", StylePalette.CreateSolidButtonStyle(StylePalette.Jade));
         _restartButton.AddThemeStyleboxOverride("hover", StylePalette.CreateSolidButtonStyle(StylePalette.Jade.Lightened(0.08f)));
         _restartButton.AddThemeStyleboxOverride("pressed", StylePalette.CreateSolidButtonStyle(StylePalette.Jade, true));

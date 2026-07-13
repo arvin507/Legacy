@@ -37,6 +37,9 @@ public static class EventLoader
         Description = entry.Description,
         IllustrationPath = entry.IllustrationPath,
         Weight = entry.Weight,
+        Unique = entry.Unique,
+        CooldownMonths = entry.CooldownMonths,
+        Tags = entry.Tags,
         Conditions = entry.Conditions.Select(condition => new ConditionData
         {
             Field = condition.Field,
@@ -92,6 +95,11 @@ public static class EventLoader
             if (gameEvent.Weight <= 0)
             {
                 throw new InvalidDataException($"Event '{gameEvent.Id}' must have a positive weight.");
+            }
+
+            if (gameEvent.CooldownMonths < 0)
+            {
+                throw new InvalidDataException($"Event '{gameEvent.Id}' has a negative cooldown.");
             }
 
             if (gameEvent.Choices.Count is < 2 or > 4)
@@ -159,6 +167,15 @@ public static class EventLoader
 
         [JsonPropertyName("weight")]
         public int Weight { get; init; }
+
+        [JsonPropertyName("unique")]
+        public bool Unique { get; init; }
+
+        [JsonPropertyName("cooldown_months")]
+        public int CooldownMonths { get; init; }
+
+        [JsonPropertyName("tags")]
+        public List<string> Tags { get; init; } = [];
 
         [JsonPropertyName("conditions")]
         public List<ConditionEntry> Conditions { get; init; } = [];

@@ -8,71 +8,76 @@ namespace AncientLife.Managers;
 
 public partial class GameManager : Node
 {
-    public event System.Action? StateChanged;
-    public event System.Action<ActionResult>? ActionResolved;
-    public event System.Action<DailySettlementResult>? DaySettled;
-    public event System.Action<GameSummary>? GameEnded;
-    public event System.Action<EventData>? RandomEventStarted;
-    public event System.Action<EventResolution>? RandomEventResolved;
+  public event System.Action? StateChanged;
+  public event System.Action<ActionResult>? ActionResolved;
+  public event System.Action<MonthlySettlementResult>? MonthSettled;
+  public event System.Action<GameSummary>? GameEnded;
+  public event System.Action<EventData>? RandomEventStarted;
+  public event System.Action<EventResolution>? RandomEventResolved;
 
-    public GameSession Session { get; private set; } = null!;
-    public EventManager Events { get; private set; } = null!;
-    public EraManager Eras { get; private set; } = null!;
+  public GameSession Session { get; private set; } = null!;
+  public EventManager Events { get; private set; } = null!;
+  public EraManager Eras { get; private set; } = null!;
 
-    public override void _Ready()
+  public override void _Ready()
+  {
+    Eras = new EraManager(EraLoader.Load());
+    var timeSystem = new TimeSystem(CalendarConfigLoader.Load(), Eras);
+    var professionSystem = new ProfessionSystem(ProfessionConfigLoader.Load());
+    Session = new GameSession(
+      ActionConfigLoader.Load(),
+      timeSystem: timeSystem,
+      professionSystem: professionSystem);
+    Events = new EventManager(EventLoader.Load());
+    Session.StateChanged += () => StateChanged?.Invoke();
+    Session.ActionResolved += result => ActionResolved?.Invoke(result);
+    Session.MonthSettled += result => MonthSettled?.Invoke(result);
+    Session.GameEnded += summary => GameEnded?.Invoke(summary);
+  }
+
+  public ActionResult PerformAction(string actionId) => Session.PerformAction(actionId);
+
+  public void EndMonth()
+  {
+    if (!Session.BeginEndMonth())
     {
-        Eras = new EraManager(EraLoader.Load());
-        var timeSystem = new TimeSystem(CalendarConfigLoader.Load(), Eras);
-        Session = new GameSession(ActionConfigLoader.Load(), timeSystem: timeSystem);
-        Events = new EventManager(EventLoader.Load());
-        Session.StateChanged += () => StateChanged?.Invoke();
-        Session.ActionResolved += result => ActionResolved?.Invoke(result);
-        Session.DaySettled += result => DaySettled?.Invoke(result);
-        Session.GameEnded += summary => GameEnded?.Invoke(summary);
+      return;
     }
 
-    public ActionResult PerformAction(string actionId) => Session.PerformAction(actionId);
-
-    public void EndDay()
+    if (Events.TryStartRandomEvent(Session.Character, Session.Calendar, out var selectedEvent))
     {
-        if (!Session.BeginEndDay())
-        {
-            return;
-        }
-
-        if (Events.TryStartRandomEvent(Session.Character, Session.Calendar, out var selectedEvent))
-        {
-            RandomEventStarted?.Invoke(selectedEvent!);
-            return;
-        }
-
-        Session.CompleteEndDay();
+      RandomEventStarted?.Invoke(selectedEvent!);
+      return;
     }
 
-    public EventResolution? ResolveEventChoice(string choiceId)
+    Session.CompleteEndMonth();
+  }
+
+  public EventResolution? ResolveEventChoice(string choiceId)
+  {
+    if (!Session.IsEndingMonth || !Events.HasActiveEvent)
     {
-        if (!Session.IsEndingDay || !Events.HasActiveEvent)
-        {
-            return null;
-        }
-
-        var resolution = Events.ResolveChoice(choiceId, Session.Character);
-        RandomEventResolved?.Invoke(resolution);
-
-        if (resolution.NextEvent is not null)
-        {
-            StateChanged?.Invoke();
-            RandomEventStarted?.Invoke(resolution.NextEvent);
-            return resolution;
-        }
-
-        Session.CompleteEndDay();
-        return resolution;
+      return null;
     }
 
-    public void Restart()
+    var resolution = Events.ResolveChoice(choiceId, Session.Character);
+    Session.RecordEvent(resolution);
+    RandomEventResolved?.Invoke(resolution);
+
+    if (resolution.NextEvent is not null)
     {
-        Events.Reset();
-        Session.Restart();
+      StateChanged?.Invoke();
+      RandomEventStarted?.Invoke(resolution.NextEvent);
+      return resolution;
     }
+
+    Session.CompleteEndMonth();
+    return resolution;
+  }
+
+  public void Restart()
+  {
+    Events.Reset();
+    Session.Restart();
+  }
 }
